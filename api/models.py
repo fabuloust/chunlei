@@ -11,6 +11,7 @@ class Dispatch(models.Model):
     used_num = models.IntegerField(default=0, help_text=u'已使用数量')
     need_check = models.IntegerField(default=False, help_text=u'是否需要检测')
     dispatch_name = models.CharField(default='', max_length=100, null=True, blank=True, unique=True)
+    url = models.CharField(default='', max_length=100, null=True, blank=True)
 
     created_time = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
