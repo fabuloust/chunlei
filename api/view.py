@@ -29,5 +29,8 @@ def check_user_validity(request):
     """
     dispatch = request.GET.get('dispatch')
     cellphone = request.GET.get('cellphone')
-    obj = Dispatch.objects.get(dispatch_name=dispatch)
-    return json_http_success({'available': 1 if (not obj.need_check or DispatchUser.objects.filter(remark=dispatch, cellphone=cellphone).exists()) else 0})
+    try:
+        obj = Dispatch.objects.get(dispatch_name=dispatch)
+    except:
+        obj = None
+    return json_http_success({'available': 1 if (not obj or not obj.need_check or DispatchUser.objects.filter(remark=dispatch, cellphone=cellphone).exists()) else 0})
