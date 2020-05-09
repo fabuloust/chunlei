@@ -34,7 +34,7 @@ class Dispatch(models.Model):
         #                            data=base_data, headers={'User-Agent': 'Mozilla/5.0'}).json()
         #     self.dispatch_name = result['dispatch']
         #     self.url = 'https://www.chunyuyisheng.com/cooperation/wap/business/info_page/{}/'.format(self.dispatch_name)
-        return self.save(force_insert, force_update, using, update_fields)
+        return super(Dispatch, self).save(force_insert, force_update, using, update_fields)
 
 
 class DispatchUser(models.Model):
