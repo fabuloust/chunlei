@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from api.view import main_view
+from api.view import main_view, upload_excel
 
 urlpatterns = [
     path('refresh', main_view),
+    path('upload_excel', upload_excel),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
 ]

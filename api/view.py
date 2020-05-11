@@ -72,7 +72,7 @@ def upload_excel(request):
         for i in range(rows):
             row_values = sheet.row_values(i)
             remark = row_values[0]
-            cellphone = row_values[1]
+            cellphone = str(int(float(row_values[1])))
             error_msg = create_dispatch_user(remark, cellphone, all_remarks)
             if error_msg:
                 error_list.append([remark, cellphone, error_msg])
