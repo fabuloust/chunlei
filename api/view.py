@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET
 
-from api.manager.manager import get_basic_data
+from api.manager.manager import get_basic_data, create_dispatch_user
 from api.models import DispatchUser, Dispatch
 from utilities.response import json_http_response, json_http_success
 
@@ -66,12 +66,17 @@ def upload_excel(request):
         excel = xlrd.open_workbook(file_contents=file.read())
         sheet = excel.sheets()[0]
         rows = sheet.nrows
+        error_list = []
+        all_remarks = Dispatch.objects.values_list('remark').distinct()
         for i in range(rows):
             row_values = sheet.row_values(i)
             remark = row_values[0]
             cellphone = row_values[1]
+            error_msg = create_dispatch_user(remark, cellphone, all_remarks)
+            if error_msg:
+                error_list.append([remark, cellphone, error_msg])
 
-        return HttpResponse(json.dumps({"files": 'ok'}),
+        return HttpResponse(json.dumps({"files": error_list}),
                             content_type="application/json")
     else:
         form = ExcelForm()
