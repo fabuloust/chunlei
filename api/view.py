@@ -62,7 +62,7 @@ def upload_excel(request):
         form = ExcelForm(request.POST, request.FILES)
         if not form.is_valid():
             return HttpResponseBadRequest(content=json.dumps(form.errors, ensure_ascii=False))
-        file = form.cleaned_data["excel"]
+        file = open(form.cleaned_data["excel"])
         excel = xlrd.open_workbook(file_contents=file)
 
         return HttpResponse(json.dumps({"files": excel}),
