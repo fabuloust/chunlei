@@ -1,6 +1,7 @@
 import json
 
 import requests
+import xlrd as xlrd
 from django import forms
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response
@@ -61,7 +62,8 @@ def upload_excel(request):
         form = ExcelForm(request.POST, request.FILES)
         if not form.is_valid():
             return HttpResponseBadRequest(content=json.dumps(form.errors, ensure_ascii=False))
-        excel = form.cleaned_data["excel"]
+        file = form.cleaned_data["excel"]
+        excel = xlrd.open_workbook(file_contents=file)
 
         return HttpResponse(json.dumps({"files": excel}),
                             content_type="application/json")
