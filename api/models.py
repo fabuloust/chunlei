@@ -13,7 +13,7 @@ class Dispatch(models.Model):
     remark = models.CharField(default='', max_length=100, help_text=u'渠道名', unique=True)
     limit_num = models.IntegerField(default=0, help_text=u'限制数量')
     used_num = models.IntegerField(default=0, help_text=u'已使用数量')
-    need_check = models.IntegerField(default=False, help_text=u'是否需要校验')
+    need_check = models.BooleanField(default=False, help_text=u'是否需要校验')
     dispatch_name = models.CharField(default='', max_length=100, null=True, blank=True, unique=True)
     url = models.CharField(default='', max_length=100, null=True, blank=True)
 
