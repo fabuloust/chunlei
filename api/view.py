@@ -67,7 +67,7 @@ def upload_excel(request):
         sheet = excel.sheets()[0]
         rows = sheet.nrows
         for i in range(rows):
-            row_values = sheet.row_values
+            row_values = sheet.row_values(i)
             remark = row_values[0]
             cellphone = row_values[1]
 
