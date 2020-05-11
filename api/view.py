@@ -68,13 +68,12 @@ def upload_excel(request):
         sheet = excel.sheets()[0]
         rows = sheet.nrows
         error_list = []
-        all_remarks = Dispatch.objects.values_list('remark').distinct()
+        all_remarks = Dispatch.objects.values_list('remark', flat=True).distinct()
         for i in range(rows):
             row_values = sheet.row_values(i)
-            remark = str(row_values[0])
+            remark = row_values[0]
             cellphone = row_values[1]
             error_msg = create_dispatch_user(remark, cellphone, all_remarks)
-            raise 
             if error_msg:
                 error_list.append([remark, cellphone, error_msg])
 
