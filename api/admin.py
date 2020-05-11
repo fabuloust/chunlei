@@ -8,6 +8,7 @@ from api.models import Dispatch, DispatchUser
 class DispatchAdmin(VersionAdmin):
 
     list_display = ['remark', 'limit_num', 'used_num', 'url']
+    readonly_fields = ['url', 'remark', 'dispatch_name']
 
 
 @admin.register(DispatchUser)

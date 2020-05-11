@@ -1,5 +1,10 @@
+import json
 
 import requests
+from django import forms
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.shortcuts import render_to_response
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET
 
 from api.manager.manager import get_basic_data
@@ -34,3 +39,32 @@ def check_user_validity(request):
     except:
         obj = None
     return json_http_success({'available': 1 if (not obj or not obj.need_check or DispatchUser.objects.filter(remark=dispatch, cellphone=cellphone).exists()) else 0})
+
+
+class ExcelForm(forms.Form):
+    excel = forms.FileField()
+
+
+@csrf_exempt
+def upload_excel(request):
+    """
+    URL: /api/upload_excel/
+    一次上传多张图片，每次最多上传16张(实际客户端可能会限制为9张)
+    会上传到CDN，目前主要是社区在使用
+    PARA:
+            upload_method:     上传方式
+                weinxin_mini 从微信小程序api将文件上传至至七牛服务器
+                alipay_mini  从支付宝小程序api将文件上传至七牛服务器
+    TODO:之前只有h5和小程序在用，现在h5转为直传方式，小程序在用。
+    """
+    if request.method == "POST":
+        form = ExcelForm(request.POST, request.FILES)
+        if not form.is_valid():
+            return HttpResponseBadRequest(content=json.dumps(form.errors, ensure_ascii=False))
+        image_list = form.cleaned_data["images"]
+
+        return HttpResponse(json.dumps({"files": ''}),
+                            content_type="application/json")
+    else:
+        form = ExcelForm()
+        return render_to_response("excelupload.html", {"form": form})

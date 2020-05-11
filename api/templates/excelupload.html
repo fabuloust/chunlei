@@ -1,0 +1,20 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>{% block title %} 上传测试 {% endblock %}</title>
+    {% block head%}
+    {% endblock%}
+</head>
+<body id="body">
+{% block body %}
+	<form action="/api/upload_excel/" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<p><input type="submit" value="上传" /></p>
+	</form>
+    <p><a href="/api/upload_excel/">刷新</a></p>
+{% endblock %}
+</body>
+</html>
