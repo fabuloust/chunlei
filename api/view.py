@@ -10,6 +10,7 @@ from django.views.decorators.http import require_GET
 
 from api.manager.manager import get_basic_data, create_dispatch_user
 from api.models import DispatchUser, Dispatch
+from utilities.encoding import ensure_unicode
 from utilities.response import json_http_response, json_http_success
 
 
@@ -70,7 +71,7 @@ def upload_excel(request):
         all_remarks = Dispatch.objects.values_list('remark').distinct()
         for i in range(rows):
             row_values = sheet.row_values(i)
-            remark = row_values[0]
+            remark = ensure_unicode(row_values[0])
             cellphone = row_values[1]
             error_msg = create_dispatch_user(remark, cellphone, all_remarks)
             if error_msg:
