@@ -64,7 +64,14 @@ def upload_excel(request):
             return HttpResponseBadRequest(content=json.dumps(form.errors, ensure_ascii=False))
         file = form.cleaned_data["excel"]
         excel = xlrd.open_workbook(file_contents=file.read())
-        return HttpResponse(json.dumps({"files": excel}),
+        sheet = excel.sheets()[0]
+        rows = sheet.nrows
+        for i in range(rows):
+            row_values = sheet.row_values
+            remark = row_values[0]
+            cellphone = row_values[1]
+
+        return HttpResponse(json.dumps({"files": 'ok'}),
                             content_type="application/json")
     else:
         form = ExcelForm()
