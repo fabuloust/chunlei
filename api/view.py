@@ -40,7 +40,15 @@ def check_user_validity(request):
         obj = Dispatch.objects.get(dispatch_name=dispatch)
     except:
         obj = None
-    return json_http_success({'available': 1 if (not obj or not obj.need_check or DispatchUser.objects.filter(remark=dispatch, cellphone=cellphone).exists()) else 0})
+    if not obj:
+        available = 0
+    elif obj.need_check and DispatchUser.objects.filter(remark=dispatch, cellphone=cellphone).exists():
+        available = 1
+    elif not obj.need_check:
+        available = 1
+    else:
+        available = 0
+    return json_http_success({'available': available})
 
 
 class ExcelForm(forms.Form):
