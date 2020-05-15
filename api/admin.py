@@ -3,6 +3,9 @@ from reversion.admin import VersionAdmin
 
 from api.models import Dispatch, DispatchUser
 
+admin.site.site_header = '春雷健康医问通管理平台'
+admin.site.site_title = '春雷健康医问通管理平台'
+admin.site.index_title = '春雷健康医问通管理平台'
 
 @admin.register(Dispatch)
 class DispatchAdmin(VersionAdmin):
