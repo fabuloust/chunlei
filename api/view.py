@@ -22,9 +22,12 @@ def main_view(request):
                           params=get_basic_data(), headers={'User-Agent': 'Mozilla/5.0'}).json()
     info_list = result['result']
     for info in info_list:
-        obj = Dispatch.objects.get(dispatch_name=info['name'])
-        obj.used_num = info['used_num']
-        obj.save()
+        try:
+            obj = Dispatch.objects.get(dispatch_name=info['name'])
+            obj.used_num = info['used_num']
+            obj.save()
+        except:
+            pass
     return json_http_response(info_list)
 
 
